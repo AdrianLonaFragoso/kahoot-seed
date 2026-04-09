@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Quiz Completo 🤓</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: auto;
+  }
+
+  .question {
+    background: rgba(0,0,0,0.6);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .correct { color: #4CAF50; }
+  .wrong { color: #f44336; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Quiz de Conocimiento General 🤯</h1>
+  <form id="quizForm"></form>
+  <button onclick="gradeQuiz()">Calificar</button>
+  <h2 id="result"></h2>
+</div>
+
+<script>
+const quiz = [
+  // ===== 18 OPCIÓN MÚLTIPLE =====
+  { q:"¿Quién es el protagonista de Breaking Bad?",
+    a:["Walter White","Shrek chef","El primo del Chavo","Un NPC"],
+    correct:0 },
+
+  { q:"¿Cuánto es 5 x 5?",
+    a:["25","55","Un sentimiento","Depende del clima"],
+    correct:0 },
+
+  { q:"¿Planeta más grande?",
+    a:["Júpiter","La Tierra XXL","Saturno mamado","Un balón"],
+    correct:0 },
+
+  { q:"¿Qué significa 'Goodbye'?",
+    a:["Adiós","Hola otra vez","Pizza","Modo avión"],
+    correct:0 },
+
+  { q:"¿Quién creó Los Simpson?",
+    a:["Matt Groening","Homero","Burns","Un genio amarillo"],
+    correct:0 },
+
+  { q:"Capital de Japón?",
+    a:["Tokio","Osaka premium","CDMX Asia","Pueblo Paleta"],
+    correct:0 },
+
+  { q:"¿Quién fue Benito Juárez?",
+    a:["Presidente","Streamer","Luchador","NPC"],
+    correct:0 },
+
+  { q:"12 + 8?",
+    a:["20","128","Misterio","Depende"],
+    correct:0 },
+
+  { q:"¿Quién canta Thriller?",
+    a:["Michael Jackson","Tu tío","Zombie","Bad Bunny retro"],
+    correct:0 },
+
+  { q:"Idioma en Alemania?",
+    a:["Alemán","Inglés enojado","Latín turbo","Vikingo"],
+    correct:0 },
+
+  { q:"¿Quién vive en piña?",
+    a:["Bob Esponja","Aquaman","Pez freelance","Tu crush"],
+    correct:0 },
+
+  { q:"¿Saga de Darth Vader?",
+    a:["Star Wars","Harry Potter dark","Shrek space","Cars space"],
+    correct:0 },
+
+  { q:"9 x 9?",
+    a:["81","99","Sospechoso","Googlealo"],
+    correct:0 },
+
+  { q:"¿Quién fue Napoleón?",
+    a:["Emperador","Chef","Influencer","Pokémon"],
+    correct:0 },
+
+  { q:"¿Película de Spider-Man?",
+    a:["Spider-Man","Frozen","Toy Story","Chavo"],
+    correct:0 },
+
+  { q:"¿Qué significa 'Merci'?",
+    a:["Gracias","Corre","Pizza","Ninja"],
+    correct:0 },
+
+  { q:"¿Caricatura de pokebolas?",
+    a:["Pokémon","Naruto barato","Simpson anime","Dora PRO"],
+    correct:0 },
+
+  { q:"¿Quién pintó la Mona Lisa?",
+    a:["Da Vinci","Picasso","Random","NFT"],
+    correct:0 },
+
+  // ===== 7 VERDADERO/FALSO =====
+  { q:"La Tierra es plana",
+    a:["Falso","Verdadero"],
+    correct:0 },
+
+  { q:"El agua hierve a 100°C",
+    a:["Verdadero","Falso"],
+    correct:0 },
+
+  { q:"México se independizó en 1810",
+    a:["Verdadero","Falso"],
+    correct:0 },
+
+  { q:"Puedes respirar bajo el agua",
+    a:["Falso","Verdadero"],
+    correct:0 },
+
+  { q:"El sol es una estrella",
+    a:["Verdadero","Falso"],
+    correct:0 },
+
+  { q:"2 + 2 = 5",
+    a:["Falso","Verdadero"],
+    correct:0 },
+
+  { q:"Los pingüinos vuelan",
+    a:["Falso","Verdadero"],
+    correct:0 }
+];
+
+const form = document.getElementById("quizForm");
+
+// Renderizar TODO desde inicio
+quiz.forEach((item, i) => {
+  const div = document.createElement("div");
+  div.classList.add("question");
+
+  let html = `<p><b>${i+1}. ${item.q}</b></p>`;
+
+  item.a.forEach((opt, j) => {
+    html += `
+      <label>
+        <input type="radio" name="q${i}" value="${j}">
+        ${opt}
+      </label><br>`;
+  });
+
+  html += `<p id="feedback${i}"></p>`;
+  div.innerHTML = html;
+  form.appendChild(div);
+});
+
+function gradeQuiz() {
+  let score = 0;
+
+  quiz.forEach((q, i) => {
+    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+    const feedback = document.getElementById(`feedback${i}`);
+
+    if (!selected) {
+      feedback.innerHTML = "<span class='wrong'>Sin responder 😴</span>";
+      return;
+    }
+
+    if (parseInt(selected.value) === q.correct) {
+      score++;
+      feedback.innerHTML = "<span class='correct'>✔ Correcto</span>";
+    } else {
+      feedback.innerHTML = "<span class='wrong'>❌ Incorrecto</span>";
+    }
+  });
+
+  document.getElementById("result").textContent =
+    `Puntaje: ${score} / ${quiz.length}`;
+}
+</script>
+
+</body>
+</html>
